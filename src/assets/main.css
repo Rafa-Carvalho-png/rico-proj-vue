@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form-check-input.completed {
+  filter: none;
+  opacity: 0.5;
+}
+.completed {
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+.edit-item input[type="text"] {
+  color: #999;
+}
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.42857;
+}
