@@ -12,10 +12,10 @@
             <div :class="{'block': isMenuOpen, 'hidden': !isMenuOpen}" class="w-full lg:flex lg:items-center lg:w-auto">
                 <ul class="lg:flex lg:space-x-4 ml-auto">
                     <li v-if="!isAuthenticated">
-                        <a href="#" class="block lg:inline-block text-gray-700 hover:text-gray-900 border border-gray-300 rounded px-4 py-2">Login</a>
+                        <a href="/login" class="block lg:inline-block text-gray-700 hover:text-gray-900 border border-gray-300 rounded px-4 py-2">Login</a>
                     </li>
                     <li v-if="!isAuthenticated">
-                        <a href="#" class="block lg:inline-block text-white bg-blue-500 hover:bg-blue-600 rounded px-4 py-2">Register</a>
+                        <a href="/register" class="block lg:inline-block text-white bg-blue-500 hover:bg-blue-600 rounded px-4 py-2">Register</a>
                     </li>
                     <li v-if="isAuthenticated">
                         <a href="#" class="block lg:inline-block text-gray-700 hover:text-gray-900 border border-gray-300 rounded px-4 py-2" @click="logout">Logout</a>
@@ -44,7 +44,7 @@ export default {
         },
         logout() {
             localStorage.removeItem("auth_token");
-            this.$router.push("/login");
+            window.location.href = "/login";
         }
     }
 }

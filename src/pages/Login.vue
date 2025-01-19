@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { login } from "../http/auth-api";
 
 export default {
@@ -39,9 +38,9 @@ export default {
         });
         const token = response.data.token;
         localStorage.setItem("auth_token", token);
-        this.$router.push("/dashboard");
+        window.location.href = "/";
       } catch (err) {
-        this.error = "Credenciais inválidas. Tente novamente.";
+        this.error = err.response?.data?.errors?.message || "Invalid credentials. Try again later.";
       }
     },
   },
