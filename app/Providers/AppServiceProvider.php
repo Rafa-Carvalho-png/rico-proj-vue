@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app->bind(
+            \App\Repository\User\UserRepositoryInterface::class,
+            \App\Repository\User\UserRepository::class
+        );
+
+        $this->app->bind(
+            \App\Repository\PasswordReset\PasswordResetRepositoryInterface::class,
+            \App\Repository\PasswordReset\PasswordResetRepository::class
+        );
     }
 }

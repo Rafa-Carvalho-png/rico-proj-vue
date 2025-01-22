@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Jobs\SendForgotPasswordEmail;
 use App\Http\Requests\RegisterRequest;
+use App\Services\PasswordResetService;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        private UserService $userService,
+        private PasswordResetService $passwordResetService
+    ) {
+    }
+
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only(['email', 'password']);
@@ -31,12 +35,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(RegisterRequest $request, User $user): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
         $credentials = $request->only(['name', 'email', 'password']);
-        $credentials['password'] = bcrypt($credentials['password']);
+        $credentials['password'] = $this->userService->encryptPassword($credentials['password']);
 
-        if (!$user = $user->create($credentials)){
+        if (!$user = $this->userService->insert($credentials)){
             abort(500, 'Something went wrong');
         }
 
@@ -53,16 +57,12 @@ class AuthController extends Controller
     {
         $request->validate(['email' => 'required|email']);
 
-        $token = Str::random(60);
-
-        DB::table('password_resets')->updateOrInsert(
-            ['email' => $request->email],
-            [
-                'email' => $request->email,
-                'token' => $token,
-                'created_at' => Carbon::now()
-            ]
-        );
+        $token = $this->passwordResetService->resetToken($request->email);
+        if (empty($token)) {
+            return response()->json([
+                'error' => 'Failed to generate token'
+            ], 500);
+        }
 
         SendForgotPasswordEmail::dispatch($request->email, $token);
 
@@ -78,24 +78,16 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $passwordReset = DB::table('password_resets')
-            ->where('token', $request->token)
+        $passwordReset = $this->passwordResetService
+            ->findByToken($request->token)
             ->first();
 
         if (!$passwordReset) {
             return response()->json(['error' => 'Invalid token'], 400);
         }
 
-        $user = User::where('email', $passwordReset->email)->first();
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        DB::table('password_resets')->where('email', $passwordReset->email)->delete();
+        $this->userService->resetPassword($passwordReset->email, $request->password);
+        $this->passwordResetService->deleteByEmail($passwordReset->email);
 
         return response()->json(['message' => 'Password has been reset successfully']);
     }
