@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { register } from "../http/auth-api";
+import { post } from "../http/auth-api";
 
 export default {
   data() {
@@ -40,7 +40,7 @@ export default {
   methods: {
     async register() {
       try {
-        const response = await register({
+        const response = await post('/auth/register',{
           name: this.name,
           email: this.email,
           password: this.password,

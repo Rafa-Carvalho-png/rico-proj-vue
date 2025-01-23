@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { logout } from "../http/auth-api";
+import { get } from "../http/auth-api";
 
 export default {
     data() {
@@ -45,7 +45,7 @@ export default {
             this.isMenuOpen = !this.isMenuOpen;
         },
         async logout() {
-            await logout();
+            await get('/auth/logout');
             localStorage.removeItem("auth_token");
             window.location.href = "/login";
         }

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { login } from "../http/auth-api";
+import { post } from "../http/auth-api";
 
 export default {
   data() {
@@ -35,7 +35,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await login({
+        const response = await post('/auth/login', {
           email: this.email,
           password: this.password,
         });
