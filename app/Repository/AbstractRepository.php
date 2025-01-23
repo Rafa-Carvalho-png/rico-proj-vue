@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AbstractRepository implements AbstractRepositoryInterface
 {
@@ -40,6 +41,11 @@ class AbstractRepository implements AbstractRepositoryInterface
     public function filter(array $filter): Collection
     {
         return $this->model->where($filter)->get();
+    }
+
+    public function paginate(int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->model::paginate($perPage);
     }
 
     public function all(): Collection

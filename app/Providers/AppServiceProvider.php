@@ -28,5 +28,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repository\PasswordReset\PasswordResetRepositoryInterface::class,
             \App\Repository\PasswordReset\PasswordResetRepository::class
         );
+
+        $this->app->bind(
+            \App\Repository\Call\CallRepositoryInterface::class,
+            \App\Repository\Call\CallRepository::class
+        );
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -53,5 +52,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function callsFrom()
+    {
+        return $this->hasMany(Call::class, 'from_user');
+    }
+
+    public function callsTo()
+    {
+        return $this->hasMany(Call::class, 'to_user');
     }
 }
