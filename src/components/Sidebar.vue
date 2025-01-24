@@ -33,6 +33,7 @@
                 </div>
             </li>
         </ul>
+        <CallPopup v-if="inCall" :username="activeCall.username" @endCall="endCall" />
     </div>
 </template>
 
@@ -40,14 +41,22 @@
 import { get, post } from "../http/auth-api";
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
-
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import CallPopup from "./CallPopup.vue";
 
 export default {
+    components: {
+        CallPopup,
+    },
+
     data() {
         return {
             onlineUsers: [],
             incomingCallUserId: null,
-            myId: localStorage.getItem("my_id")
+            myId: localStorage.getItem("my_id"),
+            activeCall: null,
+            inCall: false,
         };
     },
     methods: {
@@ -78,6 +87,15 @@ export default {
                 .listen(`.ResponseCall_${this.myId}`, (event) => {
                     console.log("Recebendo resposta de chamada:", event);
                     this.incomingCallUserId = null;
+                    if (!event.accepted) {
+                        toast.error("Chamada recusada pelo usuário.");
+                        return;
+                    }
+
+                    this.inCall = true;
+                    this.activeCall = {
+                        username: event.username,
+                    };
                 });
         },
         async callUser(userId) {
@@ -106,6 +124,11 @@ export default {
                 console.error("Erro ao recusar chamada", error);
             }
         },
+        endCall() {
+            this.inCall = false;
+            this.activeCallUser = "";
+        }
+
     },
     mounted() {
         this.fetchOnlineUsers();
