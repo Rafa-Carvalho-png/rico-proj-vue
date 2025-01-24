@@ -23,7 +23,7 @@ class CallService
             'from_user' => $callerId,
             'to_user' => $receiverId,
             'call_sid' => $callSid,
-            'status' => 'in_progress',
+            'status' => 'in-progress',
         ]);
     }
 

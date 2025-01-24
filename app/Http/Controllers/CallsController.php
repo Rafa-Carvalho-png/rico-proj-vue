@@ -53,7 +53,8 @@ class CallsController extends Controller
         $caller   = $this->userService->find($request->caller_id);
         $receiver = $this->userService->find($request->receiver_id);
 
-        $twilioCall = $this->twilioService->makeCallBetweenUsers($caller, $receiver);
+        // $twilioCall = $this->twilioService->makeCallBetweenUsers($caller, $receiver);
+        $twilioCall = (object) ['sid' => 'fake-sid'];
         $this->callService->insertInProgressCall(
             $request->caller_id,
             $request->receiver_id,
