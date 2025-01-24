@@ -40,8 +40,13 @@
 <script>
 import { get } from "../http/auth-api";
 import { format } from "date-fns";
+import Sidebar from "../components/Sidebar.vue";
 
 export default {
+  components: {
+    Sidebar,
+  },
+
   data() {
     return {
       calls: [],

@@ -40,7 +40,9 @@ export default {
           password: this.password,
         });
         const token = response.data.token;
+        const myId = response.data.id
         localStorage.setItem("auth_token", token);
+        localStorage.setItem("my_id", myId);
         window.location.href = "/";
       } catch (err) {
         this.error = err.response?.data?.errors?.message || "Invalid credentials. Try again later.";

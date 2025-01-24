@@ -47,7 +47,9 @@ export default {
           password_confirmation: this.password_confirmation,
         });
         const token = response.data.token;
+        const myId = response.data.id
         localStorage.setItem("auth_token", token);
+        localStorage.setItem("my_id", myId);
         window.location.href = "/";
       } catch (err) {
         this.error = err.response?.data?.errors?.message || "Registration failed. Please try again.";

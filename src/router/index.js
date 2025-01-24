@@ -6,7 +6,7 @@ import Register from '../pages/Register.vue';
 import Login from '../pages/Login.vue';
 
 const routes = [
-  { path: '/', component: Dashboard, meta: { title: 'Dashboard - Ricochet360' } },
+  { path: '/', component: Dashboard, meta: { title: 'Dashboard - Ricochet360', requiresAuth: true } },
   { path: '/forgot-password', component: ForgotPassword, meta: { title: 'Forgot Password - Ricochet360' } },
   { path: '/reset-password', component: ResetPassword, meta: { title: 'Reset Password - Ricochet360' } },
   { path: '/register', component: Register, meta: { title: 'Register - Ricochet360' } },
@@ -20,7 +20,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'Ricochet360';
-  next();
+
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    next('/login');
+  } else {
+    next();
+  }
 });
+
+function isAuthenticated() {
+  return !!localStorage.getItem("auth_token");
+}
 
 export default router;
