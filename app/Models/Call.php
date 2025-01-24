@@ -14,6 +14,8 @@ class Call extends Model
         'call_sid',
         'status',
         'duration',
+        'from_user',
+        "to_user"
     ];
 
     public function fromUser()

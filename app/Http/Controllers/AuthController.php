@@ -28,7 +28,9 @@ class AuthController extends Controller
             abort(401, 'Unauthorized');
         }
 
+        $this->userService->setOnline(auth()->id());
         return response()->json([
+            'id' => auth()->id(),
             'token' => $token,
             'token_type' => 'bearer',
             'token_expires' => Auth::factory()->getTTL() * 60
@@ -45,7 +47,9 @@ class AuthController extends Controller
         }
 
         $token = auth()->attempt($request->only(['email', 'password']));
+        $this->userService->setOnline(auth()->id());
         return response()->json([
+            'id' => auth()->id(),
             'user' => $user,
             'token' => $token,
             'token_type' => 'bearer',
@@ -94,6 +98,7 @@ class AuthController extends Controller
 
     public function logout()
     {
+        $this->userService->setOffline(auth()->id());
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);

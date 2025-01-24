@@ -19,7 +19,7 @@ class CallFactory extends Factory
     {
         return [
             'call_sid' => Str::uuid(),
-            'status' => $this->faker->randomElement(['in-progress', 'completed', 'failed', 'no-answer']),
+            'status' => $this->faker->randomElement(['in-progress', 'completed', 'rejected']),
             'duration' => $this->faker->numberBetween(1, 3600),
             'from_user' => 1,
             'to_user' => 2,

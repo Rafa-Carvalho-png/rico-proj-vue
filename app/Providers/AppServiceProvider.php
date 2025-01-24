@@ -33,5 +33,16 @@ class AppServiceProvider extends ServiceProvider
             \App\Repository\Call\CallRepositoryInterface::class,
             \App\Repository\Call\CallRepository::class
         );
+
+        $this->app->bind(
+            \App\Services\CommunicationIntegrator\CommunicationIntegratorInterface::class,
+            function ($app) {
+                return new \App\Services\CommunicationIntegrator\TwilioService(
+                    env('TWILIO_SID'),
+                    env('TWILIO_AUTH_TOKEN'),
+                );
+            }
+        );
+
     }
 }

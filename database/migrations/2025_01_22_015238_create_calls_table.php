@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('calls', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('call_sid');
-            $table->enum('status', ['in-progress', 'completed', 'failed', 'no-answer']);
-            $table->integer('duration');
+            $table->string('call_sid')->nullable();
+            $table->enum('status', ['in-progress', 'completed', 'rejected']);
+            $table->integer('duration')->default(0);
             $table->unsignedBigInteger('from_user');
             $table->unsignedBigInteger('to_user');
 

@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class AbstractRepository implements AbstractRepositoryInterface
+abstract class AbstractRepository implements AbstractRepositoryInterface
 {
     public function __construct(protected Model $model)
     {
@@ -20,11 +20,7 @@ class AbstractRepository implements AbstractRepositoryInterface
     public function update(int $id, array $data): bool
     {
         $model = $this->model::find($id);
-        if ($model) {
-            $model->update($data);
-            return true;
-        }
-        return false;
+        return $model?->update($data) ?? false;
     }
 
     public function delete(int $id): bool
