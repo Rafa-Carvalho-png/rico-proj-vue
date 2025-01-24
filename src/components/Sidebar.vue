@@ -110,7 +110,11 @@ export default {
             console.log("Chamada aceita de", userId);
             this.incomingCallUserId = null;
             try {
-                await post("/calls/accept", { 'caller_id': userId, 'receiver_id': this.myId });
+                let response = await post("/calls/accept", { 'caller_id': userId, 'receiver_id': this.myId });
+                this.inCall = true;
+                this.activeCall = {
+                    username: response.username,
+                };
             } catch (error) {
                 console.error("Erro ao aceitar chamada", error);
             }

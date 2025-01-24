@@ -1,4 +1,5 @@
 <template>
+<div class="teste">
   <div class="dashboard-container">
     <h2 class="text-2xl font-bold mb-4">User Calls</h2>
     <table class="min-w-full bg-white">
@@ -35,6 +36,7 @@
       </button>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -115,6 +117,13 @@ export default {
 </script>
 
 <style scoped>
+
+.teste {
+  margin-right: 250px;
+  display: flex;
+  flex-direction: row;
+}
+
 .dashboard-container {
   max-width: 800px;
   margin: 50px auto;

@@ -4,6 +4,7 @@ import ResetPassword from '../pages/ResetPassword.vue';
 import ForgotPassword from '../pages/ForgotPassword.vue';
 import Register from '../pages/Register.vue';
 import Login from '../pages/Login.vue';
+import { isAuthenticated } from '../utils/auth';
 
 const routes = [
   { path: '/', component: Dashboard, meta: { title: 'Dashboard - Ricochet360', requiresAuth: true } },
@@ -27,9 +28,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
-function isAuthenticated() {
-  return !!localStorage.getItem("auth_token");
-}
 
 export default router;

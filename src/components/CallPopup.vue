@@ -1,5 +1,5 @@
 <template>
-  <div class="call-box bg-gray-900 text-white p-4 rounded-lg shadow-lg fixed bottom-5 right-5 cursor-move">
+  <div class="call-box bg-gray-900 text-white p-4 rounded-lg shadow-lg fixed bottom-5 right-5">
     <div class="flex justify-between items-center">
       <span class="font-semibold">{{ username }}</span>
       <div class="flex gap-2">

@@ -46,8 +46,12 @@ export default {
           password: this.password,
           password_confirmation: this.password_confirmation,
         });
+
+        const expiresIn = response.data.token_expires;
+        const expirationTime = new Date().getTime() + expiresIn * 1000;
         const token = response.data.token;
         const myId = response.data.id
+        localStorage.setItem("token_expires_at", expirationTime);
         localStorage.setItem("auth_token", token);
         localStorage.setItem("my_id", myId);
         window.location.href = "/";
